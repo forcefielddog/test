@@ -26,8 +26,9 @@ steal('can/construct', function (Construct) {
 
 steal('can',
       'can/util/fixture',
+      './todos.ejs',
  
-      function(Can){
+      function(Can, TodoEJS){
       
           Todo = 
               can.Model({
@@ -61,10 +62,11 @@ steal('can',
             },
 
             "PUT /todos/{id}": function(){
+
                 return {};
             },
 
-            "DELETE /todos/{id}": function(){
+            "DELETE /todos/{id}": function(id){
                 return {};
             }
 
@@ -77,26 +79,44 @@ steal('can',
         Todo.findOne({}, function(todo){
             console.log(todo);
         });
-
-        var todo = new Todo({
-            name: "mow lawn"
-        });
-
-        todo.save(function(todo){
-            console.log(todo);
-        });
-
+        
         var todo = new Todo({name: "mow lawn"});
         todo.save(function(todo){
             console.log("created ", todo);
-            todo.attr("name", "mow my lawn");
-            todo.save( function(todo){
-                console.log("updated", todo);
-            } );
+           
+        });
+
+          
+        Todo.findAll({}, function(todos){
+            console.log('got todos:', todos);
         });
           
+          
+          todo.destroy(todo.id);
+          
+          Todo.findAll({}, function(todos){
+            console.log('got newest todos:', todos);
+        });
+          
+          
+          var todo1 = new Todo({name: "get paid"});
+          todo1.bind('created', function(ev, todo){
+              console.log("created", todo);
+          });
+          todo1.save();
+          
+          
+          Todo.findAll({}, function(todos){
+            console.log(can.view("todosEJS", todos));
+              $('#todos').html(todosEJS(todos));
+        });
+          
+          
+      
           
       }
 
 
+
 );
+

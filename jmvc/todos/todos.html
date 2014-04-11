@@ -3,7 +3,12 @@
     <head></head>
     <body>
     
-        <ul id='todos'>    
+        <ul id='todos'> 
+            <script type='text/ejs' id='todosEJS'>
+  <% for(var i = 0; i < this.length; i++ ){ %>
+    <li><%= this[i].name %></li>
+  <% } %>
+</script>
         </ul>
         
         <input id='editor'/>
